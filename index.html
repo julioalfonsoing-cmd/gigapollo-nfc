@@ -8,30 +8,51 @@
   html,body{margin:0;background:#050505}
   .page{position:relative;width:min(100vw,680px);margin:0 auto;line-height:0}
   .page img{display:block;width:100%;height:auto}
-  .hit{
-    position:absolute;
-    display:block;
-    border-radius:18px;
-    background:transparent;
-    text-indent:-9999px;
-  }
-  /* Coordinates are proportional to the 1024x1536 artwork. */
+  .hit{position:absolute;display:block;border-radius:18px;background:transparent;text-indent:-9999px}
   .review{left:6%;top:43.0%;width:88%;height:9.0%}
   .whatsapp{left:6%;top:53.5%;width:43%;height:9.0%}
-  .instagram{right:6%;top:53.5%;width:43%;height:9.0%}
   .menu{left:6%;top:64.5%;width:88%;height:9.0%}
   .promo{left:6%;top:75.0%;width:88%;height:14.0%}
-  .note{font:13px Arial,sans-serif;line-height:1.4;color:#aaa;text-align:center;padding:12px 16px 20px}
+
+  .menus{width:min(100vw,680px);margin:0 auto;padding:18px 0 30px;background:#050505;line-height:0}
+  .menus h2{margin:0;padding:0 16px 14px;color:#fff;font:700 24px/1.2 Arial,sans-serif;text-align:center}
+  .menu-card{display:block;width:calc(100% - 24px);margin:0 12px 18px;border-radius:14px;overflow:hidden;background:#111;box-shadow:0 4px 18px rgba(0,0,0,.45)}
+  .menu-card img{display:block;width:100%;height:auto}
+  .back{display:block;margin:4px auto 0;width:max-content;padding:11px 18px;border-radius:999px;background:#c40000;color:#fff;text-decoration:none;font:700 14px/1 Arial,sans-serif}
+  #promociones{width:min(100vw,680px);margin:0 auto;padding:8px 16px 30px;box-sizing:border-box;background:#050505;color:#aaa;font:13px/1.4 Arial,sans-serif;text-align:center}
 </style>
 </head>
 <body>
-<main class="page">
+
+<main class="page" id="inicio">
   <img src="gigapollo.png" alt="GIGAPOLLO Misiones 2">
+
   <a class="hit review" href="https://g.page/r/CYmoA3CAMyogEAI/review" target="_blank" rel="noopener" aria-label="Déjanos tu opinión">Reseñas</a>
-  <a class="hit whatsapp" href="#" aria-label="Pide por WhatsApp">WhatsApp</a>
-  <a class="hit instagram" href="#" aria-label="Síguenos en Instagram">Instagram</a>
-  <a class="hit menu" href="#" aria-label="Consulta nuestro menú">Menú</a>
-  <a class="hit promo" href="#" aria-label="Promociones exclusivas">Promociones</a>
+
+  <a class="hit whatsapp" href="https://wa.me/525560635064" target="_blank" rel="noopener" aria-label="Pide por WhatsApp">WhatsApp</a>
+
+  <a class="hit menu" href="#menu" aria-label="Consulta nuestro menú">Menú</a>
+
+  <a class="hit promo" href="#promociones" aria-label="Promociones exclusivas">Promociones</a>
 </main>
+
+<section class="menus" id="menu">
+  <h2>🍗 NUESTRO MENÚ</h2>
+
+  <a class="menu-card" href="MENU POLLOS.jpeg" target="_blank" rel="noopener">
+    <img src="MENU POLLOS.jpeg" alt="Menú GIGAPOLLO">
+  </a>
+
+  <a class="menu-card" href="MENU INDIVIDUAL GIGAPOLLO.png" target="_blank" rel="noopener">
+    <img src="MENU INDIVIDUAL GIGAPOLLO.png" alt="Menú individual GIGAPOLLO">
+  </a>
+
+  <a class="back" href="#inicio">Volver arriba</a>
+</section>
+
+<section id="promociones">
+  Las promociones aparecerán aquí próximamente.
+</section>
+
 </body>
 </html>
