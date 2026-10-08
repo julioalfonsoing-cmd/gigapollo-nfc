@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Validar canje | GIGAPOLLO</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: #050505;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  .contenedor {
+    width: min(100%, 520px);
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .logo {
+    display: block;
+    width: 220px;
+    max-width: 80%;
+    margin: 10px auto 25px;
+  }
+
+  .tarjeta {
+    background: #171717;
+    border: 2px solid #ffcc00;
+    border-radius: 18px;
+    padding: 25px 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,.5);
+  }
+
+  h1 {
+    text-align: center;
+    color: #ffcc00;
+    font-size: 27px;
+    margin: 0 0 25px;
+  }
+
+  label {
+    display: block;
+    margin: 15px 0 7px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px;
+    border: 0;
+    border-radius: 10px;
+    background: #d40000;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:hover {
+    opacity: .9;
+  }
+
+  .verde {
+    color: #7cff7c;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .rojo {
+    color: #ff5555;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .gris {
+    color: #999;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  #panelValidador {
+    display: none;
+  }
+
+  #resultado {
+    margin-top: 20px;
+  }
+
+  .objeto {
+    background: #222;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <img
+    class="logo"
+    src="gigapollo.png"
+    alt="GIGAPOLLO Misiones 2"
+  >
+
+  <!-- LOGIN -->
+
+  <section class="tarjeta" id="panelLogin">
+
+    <h1>🔐 Validar canje</h1>
+
+    <p class="gris">
+      Acceso exclusivo para el personal autorizado.
+    </p>
+
+    <label for="email">
+      Correo
+    </label>
+
+    <input
+      id="email"
+      type="email"
+      autocomplete="username"
+      placeholder="correo"
+    >
+
+    <label for="password">
+      Contraseña
+    </label>
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="contraseña"
+    >
+
+    <button onclick="iniciarSesion()">
+      INICIAR SESIÓN
+    </button>
+
+    <div id="loginResultado"></div>
+
+  </section>
+
+
+  <!-- VALIDADOR -->
+
+  <section class="tarjeta" id="panelValidador">
+
+    <h1>✅ Validador</h1>
+
+    <p class="gris">
+      Introduce el token del objeto promocional.
+    </p>
+
+    <label for="token">
+      Token del objeto
+    </label>
+
+    <input
+      id="token"
+      type="text"
+      autocomplete="off"
+      placeholder="Pega aquí el token"
+    >
+
+    <label for="beneficio">
+      Beneficio entregado
+    </label>
+
+    <input
+      id="beneficio"
+      type="text"
+      placeholder="Ej. arroz"
+    >
+
+    <button onclick="validarCanje()">
+      VALIDAR CANJE
+    </button>
+
+    <div id="resultado"></div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://eqfwsvkvhbnrfephyhyb.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_LPUgLl1SedL7e4hBgLa3LQ_HEedHNFS";
+
+
+let accessToken = null;
+
+
+/* =========================
+   INICIAR SESIÓN
+========================= */
+
+async function iniciarSesion() {
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const resultado =
+    document.getElementById("loginResultado");
+
+  if (!email || !password) {
+
+    resultado.innerHTML =
+      '<p class="rojo">Escribe correo y contraseña.</p>';
+
+    return;
+  }
+
+  resultado.innerHTML =
+    '<p class="gris">🔄 Iniciando sesión...</p>';
+
+  try {
+
+    const response = await fetch(
+      `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY
+        },
+
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      }
+    );
+
+    const datos = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        datos.error_description ||
+        datos.msg ||
+        "No se pudo iniciar sesión."
+      );
+    }
+
+    accessToken =
+      datos.access_token;
+
+    document.getElementById(
+      "panelLogin"
+    ).style.display = "none";
+
+    document.getElementById(
+      "panelValidador"
+    ).style.display = "block";
+
+  } catch (error) {
+
+    resultado.innerHTML =
+      `<p class="rojo">❌ ${error.message}</p>`;
+
+  }
+}
+
+
+/* =========================
+   VALIDAR CANJE
+========================= */
+
+async function validarCanje() {
+
+  if (!accessToken) {
+
+    alert("La sesión no está iniciada.");
+
+    return;
+  }
+
+  const token =
+    document.getElementById("token").value.trim();
+
+  const beneficio =
+    document.getElementById("beneficio").value.trim();
+
+  const resultado =
+    document.getElementById("resultado");
+
+  if (!token) {
+
+    resultado.innerHTML =
+      '<p class="rojo">Escribe el token del objeto.</p>';
+
+    return;
+  }
+
+  resultado.innerHTML =
+    '<p class="gris">🔄 Validando...</p>';
+
+  try {
+
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/redeem_object`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization":
+            `Bearer ${accessToken}`
+        },
+
+        body: JSON.stringify({
+          p_token: token,
+          p_benefit: beneficio || null
+        })
+      }
+    );
+
+    const datos = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        datos.message ||
+        "No se pudo procesar el canje."
+      );
+    }
+
+    const resultadoCanje =
+      Array.isArray(datos)
+        ? datos[0]
+        : datos;
+
+    if (!resultadoCanje.success) {
+
+      resultado.innerHTML = `
+        <div class="objeto">
+          <p class="rojo">
+            ❌ ${resultadoCanje.message}
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    resultado.innerHTML = `
+      <div class="objeto">
+
+        <p class="verde">
+          ✅ CANJE REALIZADO
+        </p>
+
+        <p>
+          <strong>
+            ${resultadoCanje.business_name}
+          </strong>
+        </p>
+
+        <p>
+          ${resultadoCanje.campaign_name}
+        </p>
+
+        <p>
+          Objeto #${resultadoCanje.object_number}
+        </p>
+
+        <p class="verde">
+          Beneficio entregado:
+          ${beneficio || "registrado"}
+        </p>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    console.error(error);
+
+    resultado.innerHTML = `
+      <div class="objeto">
+        <p class="rojo">
+          ⚠️ ${error.message}
+        </p>
+      </div>
+    `;
+
+  }
+}
+
+</script>
+
+</body>
+</html>
