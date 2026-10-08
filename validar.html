@@ -198,15 +198,40 @@
   readonly
 >
 
-    <label for="beneficio">
-      Beneficio entregado
-    </label>
+    <label>
+  Beneficio elegido
+</label>
 
-    <input
-      id="beneficio"
-      type="text"
-      placeholder="Ej. arroz"
-    >
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+
+  <button
+    type="button"
+    onclick="seleccionarBeneficio('arroz')"
+    class="beneficio-btn">
+    🍚 ARROZ
+  </button>
+
+  <button
+    type="button"
+    onclick="seleccionarBeneficio('mole')"
+    class="beneficio-btn">
+    🥣 MOLE
+  </button>
+
+  <button
+    type="button"
+    onclick="seleccionarBeneficio('chips')"
+    class="beneficio-btn">
+    🥔 CHIPS
+  </button>
+
+</div>
+
+<input
+  id="benefit"
+  type="hidden"
+  value=""
+>
 
     <button onclick="validarCanje()">
       VALIDAR CANJE
@@ -573,6 +598,34 @@ async function leerNFC() {
       `<span class="rojo">❌ ${error.message}</span>`;
 
   }
+}
+ function seleccionarBeneficio(beneficio) {
+
+  const input = document.getElementById("benefit");
+
+  input.value = beneficio;
+
+  document
+    .querySelectorAll(".beneficio-btn")
+    .forEach(btn => {
+      btn.style.background = "#333";
+      btn.style.color = "#fff";
+    });
+
+  const botones = document.querySelectorAll(".beneficio-btn");
+
+  botones.forEach(btn => {
+
+    if (
+      btn.textContent
+        .toLowerCase()
+        .includes(beneficio)
+    ) {
+      btn.style.background = "#ffcc00";
+      btn.style.color = "#000";
+    }
+
+  });
 }
 </script>
 
