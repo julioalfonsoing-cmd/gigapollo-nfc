@@ -112,6 +112,7 @@
     margin-top: 20px;
   }
 </style>
+ <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 
 <body>
@@ -645,6 +646,80 @@ async function leerNFC() {
 
   });
 }
+
+ async function leerQR() {
+
+  const lector = document.getElementById("qr-reader");
+  const estado = document.getElementById("qrEstado");
+  const tokenInput = document.getElementById("token");
+
+  lector.style.display = "block";
+
+  estado.innerHTML =
+    '<span class="gris">📷 Apunta la cámara al QR del objeto...</span>';
+
+  const qrScanner = new Html5Qrcode("qr-reader");
+
+  try {
+
+    await qrScanner.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: { width: 250, height: 250 }
+      },
+
+      async (decodedText) => {
+
+        try {
+
+          const url = new URL(decodedText);
+
+          const token =
+            url.searchParams.get("token");
+
+          if (!token) {
+
+            estado.innerHTML =
+              '<span class="rojo">❌ El QR no contiene un token válido.</span>';
+
+            return;
+          }
+
+          tokenInput.value = token;
+
+          estado.innerHTML =
+            '<span class="verde">✅ QR leído correctamente.</span>';
+
+          await qrScanner.stop();
+
+          lector.style.display = "none";
+
+        } catch (error) {
+
+          estado.innerHTML =
+            '<span class="rojo">❌ El QR no contiene una URL válida.</span>';
+
+        }
+
+      },
+
+      () => {
+        // Ignoramos errores normales de lectura mientras busca el QR.
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    estado.innerHTML =
+      `<span class="rojo">❌ No se pudo iniciar la cámara: ${error.message}</span>`;
+
+    lector.style.display = "none";
+  }
+}
+ 
 </script>
 
 </body>
