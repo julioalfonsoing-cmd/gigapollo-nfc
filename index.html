@@ -4,55 +4,432 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>GIGAPOLLO Misiones 2</title>
-<style>
-  html,body{margin:0;background:#050505}
-  .page{position:relative;width:min(100vw,680px);margin:0 auto;line-height:0}
-  .page img{display:block;width:100%;height:auto}
-  .hit{position:absolute;display:block;border-radius:18px;background:transparent;text-indent:-9999px}
-  .review{left:6%;top:43.0%;width:88%;height:9.0%}
-  .whatsapp{left:6%;top:53.5%;width:43%;height:9.0%}
-  .menu{left:6%;top:64.5%;width:88%;height:9.0%}
-  .promo{left:6%;top:75.0%;width:88%;height:14.0%}
 
-  .menus{width:min(100vw,680px);margin:0 auto;padding:18px 0 30px;background:#050505;line-height:0}
-  .menus h2{margin:0;padding:0 16px 14px;color:#fff;font:700 24px/1.2 Arial,sans-serif;text-align:center}
-  .menu-card{display:block;width:calc(100% - 24px);margin:0 12px 18px;border-radius:14px;overflow:hidden;background:#111;box-shadow:0 4px 18px rgba(0,0,0,.45)}
-  .menu-card img{display:block;width:100%;height:auto}
-  .back{display:block;margin:4px auto 0;width:max-content;padding:11px 18px;border-radius:999px;background:#c40000;color:#fff;text-decoration:none;font:700 14px/1 Arial,sans-serif}
-  #promociones{width:min(100vw,680px);margin:0 auto;padding:8px 16px 30px;box-sizing:border-box;background:#050505;color:#aaa;font:13px/1.4 Arial,sans-serif;text-align:center}
+<style>
+  html,body{
+    margin:0;
+    background:#050505;
+  }
+
+  .page{
+    position:relative;
+    width:min(100vw,680px);
+    margin:0 auto;
+    line-height:0;
+  }
+
+  .page img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .hit{
+    position:absolute;
+    display:block;
+    border-radius:18px;
+    background:transparent;
+    text-indent:-9999px;
+  }
+
+  .review{
+    left:6%;
+    top:43.0%;
+    width:88%;
+    height:9.0%;
+  }
+
+  .whatsapp{
+    left:6%;
+    top:53.5%;
+    width:43%;
+    height:9.0%;
+  }
+
+  .menu{
+    left:6%;
+    top:64.5%;
+    width:88%;
+    height:9.0%;
+  }
+
+  .promo{
+    left:6%;
+    top:75.0%;
+    width:88%;
+    height:14.0%;
+  }
+
+  .menus{
+    width:min(100vw,680px);
+    margin:0 auto;
+    padding:18px 0 30px;
+    background:#050505;
+    line-height:0;
+  }
+
+  .menus h2{
+    margin:0;
+    padding:0 16px 14px;
+    color:#fff;
+    font:700 24px/1.2 Arial,sans-serif;
+    text-align:center;
+  }
+
+  .menu-card{
+    display:block;
+    width:calc(100% - 24px);
+    margin:0 12px 18px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#111;
+    box-shadow:0 4px 18px rgba(0,0,0,.45);
+  }
+
+  .menu-card img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .back{
+    display:block;
+    margin:4px auto 0;
+    width:max-content;
+    padding:11px 18px;
+    border-radius:999px;
+    background:#c40000;
+    color:#fff;
+    text-decoration:none;
+    font:700 14px/1 Arial,sans-serif;
+  }
+
+  #promociones{
+    width:min(100vw,680px);
+    margin:0 auto;
+    padding:25px 16px 40px;
+    box-sizing:border-box;
+    background:#050505;
+    color:#aaa;
+    font:13px/1.4 Arial,sans-serif;
+    text-align:center;
+  }
+
+  .promo-box{
+    background:#171717;
+    border:2px solid #ffcc00;
+    border-radius:18px;
+    padding:24px 18px;
+    color:#fff;
+    box-shadow:0 5px 20px rgba(0,0,0,.5);
+  }
+
+  .promo-box h2{
+    margin:0 0 12px;
+    color:#ffcc00;
+    font:700 25px/1.2 Arial,sans-serif;
+  }
+
+  .promo-box p{
+    margin:10px 0;
+    font:16px/1.4 Arial,sans-serif;
+  }
+
+  .promo-button{
+    display:block;
+    margin:18px auto 0;
+    padding:15px 18px;
+    border-radius:12px;
+    color:#fff;
+    text-decoration:none;
+    font:700 16px/1 Arial,sans-serif;
+  }
+
+  .google-button{
+    background:#e53935;
+  }
+
+  .whatsapp-button{
+    background:#25d366;
+  }
+
+  .status-valid{
+    color:#7cff7c !important;
+    font-weight:bold !important;
+  }
+
+  .status-used{
+    color:#ff5555 !important;
+    font-weight:bold !important;
+  }
+
+  .loading{
+    color:#fff;
+    font:700 18px/1.4 Arial,sans-serif;
+  }
+
+  .error{
+    color:#ff5555;
+    font:700 18px/1.4 Arial,sans-serif;
+  }
+
+  .small{
+    color:#888;
+    font:13px/1.4 Arial,sans-serif;
+  }
 </style>
 </head>
+
 <body>
 
 <main class="page" id="inicio">
   <img src="gigapollo.png" alt="GIGAPOLLO Misiones 2">
 
-  <a class="hit review" href="https://g.page/r/CYmoA3CAMyogEAI/review" target="_blank" rel="noopener" aria-label="Déjanos tu opinión">Reseñas</a>
+  <a
+    class="hit review"
+    href="https://g.page/r/CYmoA3CAMyogEAI/review"
+    target="_blank"
+    rel="noopener"
+    aria-label="Déjanos tu opinión">
+    Reseñas
+  </a>
 
-  <a class="hit whatsapp" href="https://wa.me/525560635064" target="_blank" rel="noopener" aria-label="Pide por WhatsApp">WhatsApp</a>
+  <a
+    class="hit whatsapp"
+    href="https://wa.me/525560635064"
+    target="_blank"
+    rel="noopener"
+    aria-label="Pide por WhatsApp">
+    WhatsApp
+  </a>
 
-  <a class="hit menu" href="#menu" aria-label="Consulta nuestro menú">Menú</a>
+  <a
+    class="hit menu"
+    href="#menu"
+    aria-label="Consulta nuestro menú">
+    Menú
+  </a>
 
-  <a class="hit promo" href="#promociones" aria-label="Promociones exclusivas">Promociones</a>
+  <a
+    class="hit promo"
+    href="#promociones"
+    aria-label="Promociones exclusivas">
+    Promociones
+  </a>
 </main>
 
+
 <section class="menus" id="menu">
+
   <h2>🍗 NUESTRO MENÚ</h2>
 
-  <a class="menu-card" href="MENU POLLOS.jpeg" target="_blank" rel="noopener">
-    <img src="MENU POLLOS.jpeg" alt="Menú GIGAPOLLO">
+  <a
+    class="menu-card"
+    href="MENU POLLOS.jpeg"
+    target="_blank"
+    rel="noopener">
+
+    <img
+      src="MENU POLLOS.jpeg"
+      alt="Menú GIGAPOLLO">
+
   </a>
 
-  <a class="menu-card" href="MENU INDIVIDUAL GIGAPOLLO.png" target="_blank" rel="noopener">
-    <img src="MENU INDIVIDUAL GIGAPOLLO.png" alt="Menú individual GIGAPOLLO">
+  <a
+    class="menu-card"
+    href="MENU INDIVIDUAL GIGAPOLLO.png"
+    target="_blank"
+    rel="noopener">
+
+    <img
+      src="MENU INDIVIDUAL GIGAPOLLO.png"
+      alt="Menú individual GIGAPOLLO">
+
   </a>
 
-  <a class="back" href="#inicio">Volver arriba</a>
+  <a class="back" href="#inicio">
+    Volver arriba
+  </a>
+
 </section>
+
 
 <section id="promociones">
-  Las promociones aparecerán aquí próximamente.
+
+  <div id="promo-contenido">
+    Las promociones aparecerán aquí próximamente.
+  </div>
+
 </section>
+
+
+<!-- CONEXIÓN CON SUPABASE -->
+<script src="supabase.js"></script>
+
+<script>
+
+async function cargarPromocion() {
+
+  const contenido =
+    document.getElementById("promo-contenido");
+
+  const parametros =
+    new URLSearchParams(window.location.search);
+
+  const token =
+    parametros.get("token");
+
+  /*
+   * Si no hay token:
+   * dejamos el sitio normal exactamente como estaba.
+   */
+  if (!token) {
+    return;
+  }
+
+  contenido.innerHTML = `
+    <div class="promo-box">
+      <div class="loading">
+        🔄 Consultando tu promoción...
+      </div>
+    </div>
+  `;
+
+  try {
+
+    const datos =
+      await getPublicObject(token);
+
+    if (!datos || datos.length === 0) {
+
+      contenido.innerHTML = `
+        <div class="promo-box">
+          <h2>❌ Objeto no encontrado</h2>
+
+          <p>
+            Este código no corresponde
+            a una promoción válida.
+          </p>
+
+          <p class="small">
+            Verifica que estés utilizando
+            el objeto promocional correcto.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    const objeto = datos[0];
+
+    /*
+     * OBJETO YA UTILIZADO
+     */
+    if (objeto.object_status === "redeemed") {
+
+      contenido.innerHTML = `
+        <div class="promo-box">
+
+          <h2>⚠️ Promoción ya utilizada</h2>
+
+          <p class="status-used">
+            Este beneficio ya fue canjeado.
+          </p>
+
+          <p class="small">
+            Cada objeto promocional puede
+            utilizarse una sola vez.
+          </p>
+
+        </div>
+      `;
+
+      return;
+    }
+
+    /*
+     * OBJETO VÁLIDO
+     */
+    contenido.innerHTML = `
+      <div class="promo-box">
+
+        <h2>🎁 ¡Tienes una promoción!</h2>
+
+        <p>
+          <strong>${objeto.business_name}</strong>
+        </p>
+
+        <p>
+          ${objeto.campaign_description || ""}
+        </p>
+
+        <p class="status-valid">
+          ✓ PROMOCIÓN VÁLIDA
+        </p>
+
+        <p class="small">
+          Objeto promocional #${objeto.object_number}
+        </p>
+
+        <a
+          class="promo-button google-button"
+          href="${objeto.google_review_url}"
+          target="_blank"
+          rel="noopener">
+
+          ⭐ DEJA TU RESEÑA EN GOOGLE
+
+        </a>
+
+        <a
+          class="promo-button whatsapp-button"
+          href="https://wa.me/${objeto.whatsapp}"
+          target="_blank"
+          rel="noopener">
+
+          💬 PEDIR POR WHATSAPP
+
+        </a>
+
+      </div>
+    `;
+
+    /*
+     * Llevar al cliente automáticamente
+     * hasta su promoción.
+     */
+    setTimeout(() => {
+
+      document
+        .getElementById("promociones")
+        .scrollIntoView({
+          behavior:"smooth"
+        });
+
+    }, 300);
+
+  } catch (error) {
+
+    console.error(error);
+
+    contenido.innerHTML = `
+      <div class="promo-box">
+
+        <h2>⚠️ No pudimos cargar la promoción</h2>
+
+        <p>
+          Intenta nuevamente.
+        </p>
+
+      </div>
+    `;
+  }
+}
+
+cargarPromocion();
+
+</script>
 
 </body>
 </html>
