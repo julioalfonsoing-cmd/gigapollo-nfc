@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIGAPOLLO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+    }
+
+    .contenedor {
+      max-width: 520px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    img {
+      max-width: 220px;
+      margin: 10px auto 20px;
+    }
+
+    h1 {
+      color: #ffcc00;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 24px;
+    }
+
+    .promo {
+      background: #222;
+      border: 2px solid #ffcc00;
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 25px;
+    }
+
+    .boton {
+      display: block;
+      padding: 16px;
+      margin: 15px 0;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .google {
+      background: #e53935;
+      color: white;
+    }
+
+    .whatsapp {
+      background: #25d366;
+      color: white;
+    }
+
+    .error {
+      color: #ff5555;
+      margin-top: 30px;
+    }
+
+    .cargando {
+      margin-top: 40px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <img src="https://raw.githubusercontent.com/julioalfonsoing-cmd/gigapollo-nfc/main/gigapollo.png"
+         alt="GIGAPOLLO Misiones 2">
+
+    <div id="contenido">
+      <div class="cargando">
+        🔄 Consultando tu promoción...
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/gigapollo-nfc/supabase.js"></script>
+
+  <script>
+    async function cargarPromocion() {
+
+      const contenido = document.getElementById("contenido");
+
+      try {
+
+        const partes = window.location.pathname.split("/");
+        const token = partes[partes.length - 1];
+
+        if (!token) {
+          throw new Error("Token no encontrado.");
+        }
+
+        const datos = await getPublicObject(token);
+
+        if (!datos || datos.length === 0) {
+          contenido.innerHTML = `
+            <div class="error">
+              <h2>❌ Objeto no encontrado</h2>
+              <p>Este código no corresponde a una promoción válida.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const objeto = datos[0];
+
+        contenido.innerHTML = `
+          <h1>${objeto.business_name}</h1>
+
+          <p>Grande, jugoso y recién hecho</p>
+
+          <div class="promo">
+
+            <h2>🎁 ¡Tienes una promoción!</h2>
+
+            <p>${objeto.campaign_description || ""}</p>
+
+            <p>
+              <strong>Objeto #${objeto.object_number}</strong>
+            </p>
+
+            <a
+              class="google boton"
+              href="${objeto.google_review_url}"
+              target="_blank">
+              ⭐ DEJA TU RESEÑA EN GOOGLE
+            </a>
+
+            <a
+              class="whatsapp boton"
+              href="https://wa.me/${objeto.whatsapp}"
+              target="_blank">
+              💬 PEDIR POR WHATSAPP
+            </a>
+
+          </div>
+        `;
+
+      } catch (error) {
+
+        console.error(error);
+
+        contenido.innerHTML = `
+          <div class="error">
+            <h2>⚠️ No pudimos cargar la promoción</h2>
+            <p>Intenta nuevamente.</p>
+          </div>
+        `;
+      }
+    }
+
+    cargarPromocion();
+  </script>
+
+</body>
+</html>
