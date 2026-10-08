@@ -176,15 +176,27 @@
     </p>
 
     <label for="token">
-      Token del objeto
-    </label>
+  Objeto promocional
+</label>
 
-    <input
-      id="token"
-      type="text"
-      autocomplete="off"
-      placeholder="Pega aquí el token"
-    >
+<button
+  type="button"
+  onclick="leerNFC()"
+  style="background:#ffcc00;color:#000;margin-top:5px;">
+  📱 LEER NFC
+</button>
+
+<p id="nfcEstado" class="gris">
+  Acerca el objeto NFC al teléfono después de pulsar el botón.
+</p>
+
+<input
+  id="token"
+  type="text"
+  autocomplete="off"
+  placeholder="El token aparecerá automáticamente"
+  readonly
+>
 
     <label for="beneficio">
       Beneficio entregado
@@ -420,7 +432,148 @@ async function validarCanje() {
 
   }
 }
+/* =========================
+   LEER NFC
+========================= */
 
+async function leerNFC() {
+
+  const estado =
+    document.getElementById("nfcEstado");
+
+  const tokenInput =
+    document.getElementById("token");
+
+  if (!("NDEFReader" in window)) {
+
+    estado.innerHTML =
+      '<span class="rojo">❌ Este teléfono/navegador no admite Web NFC.</span>';
+
+    return;
+  }
+
+  try {
+
+    estado.innerHTML =
+      '<span class="gris">📡 Acerca el objeto NFC al teléfono...</span>';
+
+    const ndef = new NDEFReader();
+
+    await ndef.scan();
+
+    ndef.onreading = (event) => {
+
+      let urlEncontrada = null;
+
+      for (const record of event.message.records) {
+
+        if (
+          record.recordType === "url" ||
+          record.recordType === "absolute-url"
+        ) {
+
+          const bytes =
+            new Uint8Array(record.data.buffer);
+
+          /*
+           * Para registros URI NDEF:
+           * el primer byte indica el prefijo.
+           *
+           * 0x04 = https://
+           */
+
+          if (
+            record.recordType === "url" &&
+            bytes.length > 0
+          ) {
+
+            const prefijos = [
+              "",
+              "http://www.",
+              "https://www.",
+              "http://",
+              "https://"
+            ];
+
+            const prefijo =
+              prefijos[bytes[0]] || "";
+
+            const resto =
+              new TextDecoder().decode(
+                bytes.slice(1)
+              );
+
+            urlEncontrada =
+              prefijo + resto;
+
+          } else {
+
+            urlEncontrada =
+              new TextDecoder().decode(bytes);
+
+          }
+        }
+      }
+
+      if (!urlEncontrada) {
+
+        estado.innerHTML =
+          '<span class="rojo">❌ El NFC no contiene una URL válida.</span>';
+
+        return;
+      }
+
+      try {
+
+        const url =
+          new URL(urlEncontrada);
+
+        const token =
+          url.searchParams.get("token");
+
+        if (!token) {
+
+          estado.innerHTML =
+            '<span class="rojo">❌ El NFC no contiene un token válido.</span>';
+
+          return;
+        }
+
+        tokenInput.value = token;
+
+        estado.innerHTML =
+          '<span class="verde">✅ NFC leído correctamente.</span>';
+
+        /*
+         * Detenemos visualmente la espera.
+         * El token ya quedó colocado automáticamente.
+         */
+
+      } catch (error) {
+
+        estado.innerHTML =
+          '<span class="rojo">❌ No se pudo interpretar la URL del NFC.</span>';
+
+      }
+
+    };
+
+    ndef.onreadingerror = () => {
+
+      estado.innerHTML =
+        '<span class="rojo">⚠️ No se pudo leer el NFC. Intenta acercarlo nuevamente.</span>';
+
+    };
+
+  } catch (error) {
+
+    console.error(error);
+
+    estado.innerHTML =
+      `<span class="rojo">❌ ${error.message}</span>`;
+
+  }
+}
 </script>
 
 </body>
