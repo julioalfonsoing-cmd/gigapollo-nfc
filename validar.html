@@ -272,7 +272,8 @@ const SUPABASE_KEY =
   "sb_publishable_LPUgLl1SedL7e4hBgLa3LQ_HEedHNFS";
 
 
-let accessToken = null;
+let accessToken = localStorage.getItem("gigapollo_access_token");
+let refreshToken = localStorage.getItem("gigapollo_refresh_token");
 
 
 /* =========================
@@ -331,8 +332,18 @@ async function iniciarSesion() {
       );
     }
 
-    accessToken =
-      datos.access_token;
+    accessToken = datos.access_token;
+refreshToken = datos.refresh_token;
+
+localStorage.setItem(
+  "gigapollo_access_token",
+  accessToken
+);
+
+localStorage.setItem(
+  "gigapollo_refresh_token",
+  refreshToken
+);
 
     document.getElementById(
       "panelLogin"
@@ -719,6 +730,25 @@ async function leerNFC() {
     lector.style.display = "none";
   }
 }
+
+
+async function restaurarSesion() {
+  const guardado = localStorage.getItem(
+    "gigapollo_access_token"
+  );
+
+  if (!guardado) return;
+
+  accessToken = guardado;
+
+  document.getElementById("panelLogin").style.display =
+    "none";
+
+  document.getElementById("panelValidador").style.display =
+    "block";
+}
+
+restaurarSesion();
  
 </script>
 
